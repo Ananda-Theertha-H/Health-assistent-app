@@ -1,0 +1,16 @@
+from fastapi import APIRouter, UploadFile, File
+from app.services.ocr_extract import ocr_and_extract
+
+router = APIRouter()
+
+
+@router.post("/api/upload_and_analyze")
+async def upload_and_analyze(file: UploadFile = File(...)):
+
+    # Read file bytes
+    file_bytes = await file.read()
+
+    # Pass to OCR + Parser + AI Analyzer
+    result = ocr_and_extract(file_bytes, file.filename)
+
+    return result
